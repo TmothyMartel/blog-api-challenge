@@ -9,9 +9,6 @@ const blogPostRouter = require('./blogPostRouter')
 
 app.use(morgan('common'));
 
-app.get('/', (req, res) => {
-	res.send('It is working!');
-});
 
 app.use('/blog-post', blogPostRouter);
 
