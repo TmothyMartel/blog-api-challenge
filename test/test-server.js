@@ -23,7 +23,14 @@ describe('Blog Post', function() {
 			.get('/blog-post')
 			.then(res => {
 				expect(res).to.have.status(200);
+				expect(res).to.be.json;
+				expect(res.body).to.be.a('array');
 				expect(res.body.length).to.be.at.least(1);
+				const expectedKeys = ['id', 'title', 'content', 'author'];
+				res.body.forEach(item => {
+					expect(item).to.be.a('object');
+					expect(item).to.include.keys(expectedKeys);
+				})
 			});
 	});
 
@@ -31,7 +38,7 @@ describe('Blog Post', function() {
 		const newBlogPost = {
 			title: 'the test post', 
 			content: 'this is a new post for testing',
-			author: 'Tim M'
+			author: 'Tim M',
 		}
 
 		return chai.request(app)
@@ -39,6 +46,10 @@ describe('Blog Post', function() {
 			.send(newBlogPost)
 			.then(res => {
 				expect(res).to.have.status(201);
+				expect(res).to.be.json
+				expect(res.body).to.be.a('object');
+				expect(res.body).to.include.keys('id', 'title', 'content', 'author', 'publishDate');
+				expect(res.body.id).to.not.equal(null);
 			});
 	});
 
